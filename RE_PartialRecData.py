@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[10]:
+# In[ ]:
 
 def RE_PartialRecData(layer_outputs, nLayerNeurons, nRecordings, nSamples):
     import numpy as np
@@ -17,10 +17,12 @@ def RE_PartialRecData(layer_outputs, nLayerNeurons, nRecordings, nSamples):
         for iRec in range(nRecordings):
             layerArray[iRec, :]= np.random.choice(range(layer_outputs[iLayer].shape[1]), size=nLayerNeurons[iLayer], replace=False)      
         layerNeurons.append(layerArray)   
+#         if iLayer==0:
+#             print(layerArray)
 
     if len(np.unique(layerNeurons[oLayer]))<layer_outputs[oLayer].shape[1]:
     #     #pick #outputs random places and replace them with 1:#outputs.
-         layerNeurons[3][np.random.choice(range(nRecordings), size =layer_outputs[iLayer].shape[1], replace=False), 0] = range(10)   
+         layerNeurons[oLayer][np.random.choice(range(nRecordings), size =layer_outputs[iLayer].shape[1], replace=False), 0] = range(10)   
     
     # get the data
     for iLayer in range(len(layer_outputs)-1):

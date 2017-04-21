@@ -10,6 +10,10 @@ def RE_PartialRecData(layer_outputs, nLayerNeurons, nRecordings, nSamples):
     
     oLayer = len(layer_outputs)-1
     layerNeurons = list()
+    # randomly permute samples
+    totalNSamples = layer_outputs[0].shape[0]
+    random_inds  = np.random.choice(range(totalNSamples), size=totalNSamples, replace=False)
+    #print(random_inds[1])
     # choose observed neurons for each layer
     for iLayer in range(len(layer_outputs)):
         #print(iLayer)
@@ -17,19 +21,14 @@ def RE_PartialRecData(layer_outputs, nLayerNeurons, nRecordings, nSamples):
         for iRec in range(nRecordings):
             layerArray[iRec, :]= np.random.choice(range(layer_outputs[iLayer].shape[1]), size=nLayerNeurons[iLayer], replace=False)      
         layerNeurons.append(layerArray)   
-#         if iLayer==0:
-#             print(layerArray)
 
-    if len(np.unique(layerNeurons[oLayer]))<layer_outputs[oLayer].shape[1]:
-    #     #pick #outputs random places and replace them with 1:#outputs.
-         layerNeurons[oLayer][np.random.choice(range(nRecordings), size =layer_outputs[iLayer].shape[1], replace=False), 0] = range(10)   
-    
     # get the data
-    for iLayer in range(len(layer_outputs)-1):
+    for iLayer in range(len(layer_outputs)):
         if nLayerNeurons[iLayer]==0:
             continue
         sample_ind =0;
-        X_l = layer_outputs[iLayer]
+        #permuted data
+        X_l = layer_outputs[iLayer][random_inds, :]
         for iRec in range(nRecordings):
             notObserved = np.setdiff1d(range(layer_outputs[iLayer].shape[1]), layerNeurons[iLayer][iRec, :])
             inds = np.array(range(sample_ind,((iRec+1)*nSamples)))
@@ -37,7 +36,12 @@ def RE_PartialRecData(layer_outputs, nLayerNeurons, nRecordings, nSamples):
             sample_ind = sample_ind + nSamples
         if np.sum(nLayerNeurons[0:iLayer])==0:
             X=X_l
-        else:
+        elif iLayer<oLayer:
             X = np.append(X, X_l, axis=1)
-    return X;
+        else:
+            Y=X_l
+        
+    X=X[0:sample_ind, :]
+    Y=Y[0:sample_ind, :]
+    return X, Y;
 

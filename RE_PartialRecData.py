@@ -19,7 +19,7 @@ def RE_PartialRecData(layer_outputs, nLayerNeurons, nRecordings, nSamples):
         #print(iLayer)
         layerArray = np.zeros((nRecordings, nLayerNeurons[iLayer]))
         for iRec in range(nRecordings):
-            layerArray[iRec, :]= np.random.choice(range(layer_outputs[iLayer].shape[1]), size=nLayerNeurons[iLayer], replace=False)      
+            layerArray[iRec, :]= np.random.choice(range(layer_outputs[iLayer].shape[1]), size=nLayerNeurons[iLayer], replace=True)      
         layerNeurons.append(layerArray)   
 
     # get the data

@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[11]:
+# In[1]:
 
 def RE_PartialRecData2(hLayerOuts, oLayerOuts, nLayerNeurons, nRecordings, nSamples):
     import numpy as np
@@ -9,7 +9,7 @@ def RE_PartialRecData2(hLayerOuts, oLayerOuts, nLayerNeurons, nRecordings, nSamp
     # Each partial recording has nSamples.
     layerArray = np.zeros((nRecordings, nLayerNeurons), dtype=int)
     for iRec in range(nRecordings):
-        layerArray[iRec, :]= np.random.choice(range(hLayerOuts.shape[1]), size=nLayerNeurons, replace=True)      
+        layerArray[iRec, :]= np.sort(np.random.choice(range(hLayerOuts.shape[1]), size=nLayerNeurons, replace=False))      
 
     #print(layerArray)
     X = np.nan*np.zeros((nRecordings*nSamples, hLayerOuts.shape[1]))
